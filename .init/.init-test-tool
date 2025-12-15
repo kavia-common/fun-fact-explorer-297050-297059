@@ -1,0 +1,4 @@
+{
+    "command": "npm run test",
+    "working_directory": "/home/kavia/workspace/code-generation/fun-fact-explorer-297050-297059/fun_fact_frontend"
+}
