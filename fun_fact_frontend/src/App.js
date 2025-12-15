@@ -11,15 +11,16 @@ function App() {
    * - Uses Rainbow Burst theme colors (#EC4899 primary, #8B5CF6 secondary, #10B981 success).
    */
 
-  const RAINBOW_COLORS = useMemo(
+  const MONO = useMemo(
     () => ({
-      primary: '#EC4899',
-      secondary: '#8B5CF6',
-      success: '#10B981',
-      error: '#EF4444',
-      background: '#f9fafb',
-      surface: '#ffffff',
-      text: '#111827',
+      background: '#ffffff',     // page background
+      surface: '#ffffff',        // card
+      border: '#e5e7eb',         // subtle borders
+      text: '#111827',           // primary text
+      textSecondary: '#4b5563',  // secondary text
+      accent: '#111827',         // button border/fill, outlines
+      error: '#111827',          // readable error text in mono
+      success: '#111827'         // reuse accent for status dot in mono
     }),
     []
   );
@@ -142,23 +143,23 @@ function App() {
     setFactAndAnnounce(initial);
   }, [getRandomLocalFact, setFactAndAnnounce]);
 
-  // Inline styles themed by Rainbow Burst
+  // Inline styles themed by Monochrome
   const styles = useMemo(
     () => ({
       app: {
         minHeight: '100vh',
-        background: `radial-gradient(1200px 800px at 10% 10%, ${RAINBOW_COLORS.primary}1A, transparent 40%), radial-gradient(1000px 600px at 90% 20%, ${RAINBOW_COLORS.secondary}14, transparent 45%), ${RAINBOW_COLORS.background}`,
+        background: MONO.background,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        color: RAINBOW_COLORS.text,
+        color: MONO.text,
         padding: '24px',
       },
       card: {
-        background: RAINBOW_COLORS.surface,
+        background: MONO.surface,
         borderRadius: '16px',
-        boxShadow:
-          '0 10px 25px rgba(0,0,0,0.08), 0 6px 12px rgba(236,72,153,0.12), inset 0 0 0 1px rgba(139,92,246,0.08)',
+        boxShadow: '0 10px 25px rgba(0,0,0,0.06)',
+        border: `1px solid ${MONO.border}`,
         maxWidth: '720px',
         width: '100%',
         padding: '28px',
@@ -168,14 +169,14 @@ function App() {
         position: 'absolute',
         top: '-14px',
         left: '24px',
-        background: `linear-gradient(135deg, ${RAINBOW_COLORS.primary}, ${RAINBOW_COLORS.secondary})`,
-        color: 'white',
+        background: '#111827',
+        color: '#ffffff',
         fontSize: '12px',
         fontWeight: 700,
         letterSpacing: '0.06em',
         padding: '6px 10px',
         borderRadius: '999px',
-        boxShadow: '0 6px 14px rgba(236,72,153,0.35)',
+        boxShadow: '0 6px 14px rgba(0,0,0,0.15)',
       },
       heading: {
         marginTop: '8px',
@@ -183,12 +184,12 @@ function App() {
         fontSize: '24px',
         lineHeight: 1.3,
         fontWeight: 800,
-        color: RAINBOW_COLORS.text,
+        color: MONO.text,
       },
       fact: {
         fontSize: '20px',
         lineHeight: 1.5,
-        color: '#374151',
+        color: MONO.textSecondary,
         marginTop: '8px',
         marginBottom: '20px',
       },
@@ -203,29 +204,29 @@ function App() {
         alignItems: 'center',
         justifyContent: 'center',
         gap: '8px',
-        background: `linear-gradient(135deg, ${RAINBOW_COLORS.primary}, ${RAINBOW_COLORS.secondary})`,
-        color: 'white',
-        border: 'none',
+        background: '#ffffff',
+        color: MONO.accent,
+        border: `2px solid ${MONO.accent}`,
         borderRadius: '12px',
         padding: '12px 18px',
         fontSize: '16px',
         fontWeight: 800,
         cursor: 'pointer',
-        boxShadow:
-          '0 10px 18px rgba(236,72,153,0.25), 0 6px 14px rgba(139,92,246,0.25), inset 0 0 0 2px rgba(255,255,255,0.08)',
-        transition: 'transform 0.08s ease, box-shadow 0.2s ease, opacity 0.2s ease',
+        boxShadow: '0 3px 0 rgba(0,0,0,0.08)',
+        transition: 'transform 0.08s ease, box-shadow 0.2s ease, opacity 0.2s ease, background-color 0.15s ease, color 0.15s ease',
         outlineOffset: '3px',
       },
       buttonHover: {
         transform: 'translateY(-1px)',
+        background: MONO.accent,    // invert on hover
+        color: '#ffffff',
       },
       buttonActive: {
         transform: 'translateY(0)',
-        boxShadow:
-          '0 6px 12px rgba(236,72,153,0.2), 0 4px 10px rgba(139,92,246,0.2), inset 0 0 0 2px rgba(255,255,255,0.1)',
+        boxShadow: '0 1px 0 rgba(0,0,0,0.08)',
       },
       subtle: {
-        color: '#6B7280',
+        color: MONO.textSecondary,
         fontSize: '14px',
       },
       statusRow: {
@@ -242,7 +243,7 @@ function App() {
         boxShadow: `0 0 0 3px ${color}22`,
       }),
       errorText: {
-        color: RAINBOW_COLORS.error,
+        color: MONO.error,
         fontSize: '14px',
         fontWeight: 600,
       },
@@ -258,7 +259,7 @@ function App() {
         border: 0,
       },
     }),
-    [RAINBOW_COLORS]
+    [MONO]
   );
 
   const [isHover, setIsHover] = useState(false);
@@ -274,7 +275,7 @@ function App() {
     <main style={styles.app}>
       <section style={styles.card} aria-labelledby="funfact-heading">
         <span style={styles.badge} aria-hidden="true">
-          Rainbow Burst
+          Monochrome
         </span>
         <h1 id="funfact-heading" style={styles.heading}>
           Did you know?
@@ -319,7 +320,7 @@ function App() {
 
           <div style={styles.statusRow} aria-live="polite">
             <span
-              style={styles.statusDot(loading ? RAINBOW_COLORS.secondary : RAINBOW_COLORS.success)}
+              style={styles.statusDot(MONO.success)}
               aria-hidden="true"
             />
             <span style={styles.subtle}>
